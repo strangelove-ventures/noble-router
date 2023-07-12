@@ -31,21 +31,24 @@ func TestMintQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetMintRequest{
-				Attestation: "attestation1",
+				SourceContractAddress: msgs[0].SourceDomainSender,
+				Nonce:                 msgs[0].Nonce,
 			},
-			response: &types.QueryGetMintResponse{Mint: msgs[0].mint},
+			response: &types.QueryGetMintResponse{Mint: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetMintRequest{
-				Attestation: "attestation2",
+				SourceContractAddress: msgs[1].SourceDomainSender,
+				Nonce:                 msgs[1].Nonce,
 			},
-			response: &types.QueryGetMintResponse{Mint: msgs[0].mint},
+			response: &types.QueryGetMintResponse{Mint: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetMintRequest{
-				Attestation: "nothing",
+				SourceContractAddress: "nothing",
+				Nonce:                 uint64(2),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},
@@ -73,9 +76,9 @@ func TestMintQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.RouterKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNMint(keeper, ctx, 5)
-	Mint := make([]types.Mints, len(msgs))
+	Mint := make([]types.Mint, len(msgs))
 	for i, msg := range msgs {
-		Mint[i] = msg.mint
+		Mint[i] = msg
 	}
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllMintsRequest {

@@ -18,12 +18,12 @@ func DefaultGenesis() *GenesisState {
 // failure.
 func (gs GenesisState) Validate() error {
 
-	// Check for duplicated index in denoms
+	// Check for duplicated index in InFlightPackets
 	inFlightPacketsIndexMap := make(map[string]struct{})
 	for _, elem := range gs.InFlightPackets {
-		index := string(InFlightPacket([]byte(elem.Denom)))
+		index := string(LookupKey(elem.SourceDomainSender, elem.Nonce))
 		if _, ok := inFlightPacketsIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for denom")
+			return fmt.Errorf("duplicated index for InFlightPackets")
 		}
 		inFlightPacketsIndexMap[index] = struct{}{}
 	}
@@ -31,9 +31,9 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in mints
 	mintsIndexMap := make(map[string]struct{})
 	for _, elem := range gs.Mints {
-		index := string(Mint([]byte(elem.Attestation)))
+		index := string(LookupKey(elem.SourceDomainSender, elem.Nonce))
 		if _, ok := mintsIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for attestation")
+			return fmt.Errorf("duplicated index for Mints")
 		}
 		mintsIndexMap[index] = struct{}{}
 	}
@@ -41,9 +41,9 @@ func (gs GenesisState) Validate() error {
 	// Check for duplicated index in ibcForwards
 	ibcForwardsIndexMap := make(map[string]struct{})
 	for _, elem := range gs.IbcForwards {
-		index := string(IBCForward(elem.SourceDomainSender))
+		index := string(LookupKey(elem.SourceDomainSender, elem.Nonce))
 		if _, ok := ibcForwardsIndexMap[index]; ok {
-			return fmt.Errorf("duplicated index for ibcForward")
+			return fmt.Errorf("duplicated index for IBCForwards")
 		}
 		ibcForwardsIndexMap[index] = struct{}{}
 	}

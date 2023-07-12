@@ -9,24 +9,19 @@ import (
 	"github.com/strangelove-ventures/noble-router/x/router/types"
 	keepertest "github.com/strangelove-ventures/noble/testutil/keeper"
 	"github.com/strangelove-ventures/noble/testutil/nullify"
-	"github.com/strangelove-ventures/noble/testutil/sample"
 	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-type inFlightPacketWrapper struct {
-	address        string
-	inFlightPacket types.InFlightPacket
-}
-
-func createNInFlightPacket(keeper *keeper.Keeper, ctx sdk.Context, n int) []inFlightPacketWrapper {
-	items := make([]inFlightPacketWrapper, n)
+func createNInFlightPacket(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.InFlightPacket {
+	items := make([]types.InFlightPacket, n)
 	for i := range items {
-		items[i].address = sample.AccAddress()
+		items[i].SourceDomainSender = strconv.Itoa(i)
+		items[i].Nonce = uint64(i)
 
-		keeper.SetInFlightPacket(ctx, items[i].inFlightPacket)
+		keeper.SetInFlightPacket(ctx, items[i])
 	}
 	return items
 }
@@ -37,11 +32,11 @@ func TestInFlightPacketGet(t *testing.T) {
 	for _, item := range items {
 		rst, found := routerKeeper.GetInFlightPacket(
 			ctx,
-			item.inFlightPacket.SourceDomainSender,
-			item.inFlightPacket.Nonce)
+			item.SourceDomainSender,
+			item.Nonce)
 		require.True(t, found)
 		require.Equal(t,
-			nullify.Fill(&item.inFlightPacket),
+			nullify.Fill(&item),
 			nullify.Fill(&rst),
 		)
 	}
@@ -51,8 +46,16 @@ func TestInFlightPacketRemove(t *testing.T) {
 	routerKeeper, ctx := keepertest.RouterKeeper(t)
 	items := createNInFlightPacket(routerKeeper, ctx, 10)
 	for _, item := range items {
-		routerKeeper.DeleteInFlightPacket(ctx, item.address)
-		_, found := routerKeeper.GetInFlightPacket(ctx, item.address)
+		routerKeeper.DeleteInFlightPacket(
+			ctx,
+			item.SourceDomainSender,
+			item.Nonce,
+		)
+		_, found := routerKeeper.GetInFlightPacket(
+			ctx,
+			item.SourceDomainSender,
+			item.Nonce,
+		)
 		require.False(t, found)
 	}
 }
@@ -62,7 +65,7 @@ func TestInFlightPacketGetAll(t *testing.T) {
 	items := createNInFlightPacket(routerKeeper, ctx, 10)
 	inFlightPacket := make([]types.InFlightPacket, len(items))
 	for i, item := range items {
-		inFlightPacket[i] = item.inFlightPacket
+		inFlightPacket[i] = item
 	}
 	require.ElementsMatch(t,
 		nullify.Fill(inFlightPacket),

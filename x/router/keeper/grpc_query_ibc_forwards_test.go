@@ -31,21 +31,24 @@ func TestIBCForwardQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetIBCForwardRequest{
-				Sender: msgs[0].address,
+				SourceContractAddress: msgs[0].SourceDomainSender,
+				Nonce:                 msgs[0].Nonce,
 			},
-			response: &types.QueryGetIBCForwardResponse{IbcForward: msgs[0].ibcForward},
+			response: &types.QueryGetIBCForwardResponse{IbcForward: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetIBCForwardRequest{
-				Sender: msgs[1].address,
+				SourceContractAddress: msgs[1].SourceDomainSender,
+				Nonce:                 msgs[1].Nonce,
 			},
-			response: &types.QueryGetIBCForwardResponse{IbcForward: msgs[1].ibcForward},
+			response: &types.QueryGetIBCForwardResponse{IbcForward: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetIBCForwardRequest{
-				Sender: "nothing",
+				SourceContractAddress: "nothing",
+				Nonce:                 uint64(2),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},
@@ -75,7 +78,7 @@ func TestIBCForwardQueryPaginated(t *testing.T) {
 	msgs := createNIBCForward(keeper, ctx, 5)
 	IBCForward := make([]types.IBCForward, len(msgs))
 	for i, msg := range msgs {
-		IBCForward[i] = msg.ibcForward
+		IBCForward[i] = msg
 	}
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllIBCForwardsRequest {

@@ -7,60 +7,85 @@ import (
 	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
-// TODO
-func (k Keeper) HandleMessage(goCtx context.Context, msg []byte, attestation []byte) error {
+func (k Keeper) HandleMessage(goCtx context.Context, msg []byte) error {
 	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	// try to parse outer message
+	outerMessage := decodeMessage(msg)
 
 	// try to parse internal message into IBCForward
 	var ibcForward types.IBCForward
-	err := json.Unmarshal([]byte(msg.Message), &ibcForward)
-
+	err := json.Unmarshal(outerMessage.MessageBody, &ibcForward)
 	if err == nil { // message is an IBC forward
-
-		mint, found := k.GetMint(ctx, msg.Attestation)
+		existingIBCForward, found := k.GetIBCForward(ctx, ibcForward.SourceDomainSender, ibcForward.Nonce)
 		if found {
-			// check for an inflight packet - look up by _______
-			// if found, error
+			// if ack error
+			if true { // TODO
+				existingMint, found := k.GetMint(ctx, ibcForward.SourceDomainSender, ibcForward.Nonce)
+				if found {
+					_, found := k.GetInFlightPacket(ctx, ibcForward.SourceDomainSender, ibcForward.Nonce)
+					if found {
+						panic("unexpected state")
+					} else {
+						// TODO sendPacket
 
-			err := k.ics4Wrapper.SendPacket(ctx, nil, nil)
-			if err != nil {
-				return nil, err
+						// TODO
+						inFlightPacket := types.InFlightPacket{
+							SourceDomainSender:     "",
+							Nonce:                  0,
+							OriginalSenderAddress:  "",
+							RefundChannelId:        "",
+							RefundPortId:           "",
+							PacketSrcChannelId:     "",
+							PacketSrcPortId:        "",
+							PacketTimeoutTimestamp: 0,
+							PacketTimeoutHeight:    "",
+							PacketData:             nil,
+							RefundSequence:         0,
+							RetriesRemaining:       0,
+							Timeout:                0,
+							Nonrefundable:          false,
+						}
+						k.SetInFlightPacket(ctx, inFlightPacket)
+					}
+				}
+			} else {
+				// error (previous operation still in progress)
 			}
-
-		} else {
-			k.SetIBCForward(ctx, ibcForward)
-
 		}
 	}
 
-	// try to parse internal message into Mint
-	var mint types.Mints
-	err := json.Unmarshal([]byte(msg.Message), &mint)
+	// try to parse internal message into mint TODO else block?
+	var mint types.Mint
+	err = json.Unmarshal(outerMessage.MessageBody, &mint)
+	if err == nil { // message is a Mint
+		k.SetMint(ctx, mint)
+		_, found := k.GetInFlightPacket(ctx, mint.SourceDomainSender, mint.Nonce)
+		if found {
+			// err
+		} else {
+			// TODO sendpacket
 
-	// if msg is forward
-	//	// if existing ibc forward info
-	//		// if ack error on ibc forward info
-	//			// if mint info set
-	//				// if inflightpacket set
-	//				 	// panic - unexpected state
-	//				// else
-	//					// send packet, set inflightpacket for chan/port/seq
-	//		// else
-	//			// error (previous operation still in progress)
-	//	// else
-	//		// set forward info
-	//		// if mint info set
-	//			// if inflightpacket set
-	//			 	// error
-	//			// else
-	//				// send packet, set inflightpacket for chan/port/seq
-	// else if msg is mint
-	//	// set mint info
-	//	// if forward info set
-	//		// if inflightpacket set
-	//			// error
-	//		// else
-	//			// send packet, set inflightpacket for chan/port/seq
+			// TODO
+			inFlightPacket := types.InFlightPacket{
+				SourceDomainSender:     "",
+				Nonce:                  0,
+				OriginalSenderAddress:  "",
+				RefundChannelId:        "",
+				RefundPortId:           "",
+				PacketSrcChannelId:     "",
+				PacketSrcPortId:        "",
+				PacketTimeoutTimestamp: 0,
+				PacketTimeoutHeight:    "",
+				PacketData:             nil,
+				RefundSequence:         0,
+				RetriesRemaining:       0,
+				Timeout:                0,
+				Nonrefundable:          false,
+			}
+			k.SetInFlightPacket(ctx, inFlightPacket)
+		}
+	}
 
 	// # in ibc middleware
 	//

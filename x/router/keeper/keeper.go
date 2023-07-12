@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"fmt"
-	porttypes "github.com/cosmos/ibc-go/v3/modules/core/05-port/types"
 	"github.com/strangelove-ventures/noble-router/x/router/types"
 
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -14,11 +13,9 @@ import (
 
 type (
 	Keeper struct {
-		cdc         codec.BinaryCodec
-		storeKey    storetypes.StoreKey
-		paramstore  paramtypes.Subspace
-		cctp        types.CctpKeeper
-		ics4Wrapper porttypes.ICS4Wrapper
+		cdc        codec.BinaryCodec
+		storeKey   storetypes.StoreKey
+		paramstore paramtypes.Subspace
 	}
 )
 
@@ -26,8 +23,6 @@ func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey storetypes.StoreKey,
 	ps paramtypes.Subspace,
-	cctpfactory types.CctpKeeper,
-	ics4Wrapper porttypes.ICS4Wrapper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
 	if !ps.HasKeyTable() {
@@ -35,11 +30,9 @@ func NewKeeper(
 	}
 
 	return &Keeper{
-		cdc:         cdc,
-		storeKey:    storeKey,
-		paramstore:  ps,
-		cctp:        cctpfactory,
-		ics4Wrapper: ics4Wrapper,
+		cdc:        cdc,
+		storeKey:   storeKey,
+		paramstore: ps,
 	}
 }
 

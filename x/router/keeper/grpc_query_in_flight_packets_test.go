@@ -31,21 +31,24 @@ func TestInFlightPacketQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetInFlightPacketRequest{
-				Sender: msgs[0].address,
+				SourceContractAddress: msgs[0].SourceDomainSender,
+				Nonce:                 msgs[0].Nonce,
 			},
-			response: &types.QueryGetInFlightPacketResponse{IbcForward: msgs[0].ibcForward},
+			response: &types.QueryGetInFlightPacketResponse{InFlightPacket: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetInFlightPacketRequest{
-				Sender: msgs[1].address,
+				SourceContractAddress: msgs[1].SourceDomainSender,
+				Nonce:                 msgs[1].Nonce,
 			},
-			response: &types.QueryGetInFlightPacketResponse{IbcForward: msgs[1].ibcForward},
+			response: &types.QueryGetInFlightPacketResponse{InFlightPacket: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetInFlightPacketRequest{
-				Sender: "nothing",
+				SourceContractAddress: "nothing",
+				Nonce:                 uint64(2),
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},
@@ -73,9 +76,9 @@ func TestInFlightPacketQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.RouterKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNInFlightPacket(keeper, ctx, 5)
-	InFlightPacket := make([]types.InFlightPackets, len(msgs))
+	InFlightPacket := make([]types.InFlightPacket, len(msgs))
 	for i, msg := range msgs {
-		InFlightPacket[i] = msg.ibcForward
+		InFlightPacket[i] = msg
 	}
 
 	request := func(next []byte, offset, limit uint64, total bool) *types.QueryAllInFlightPacketsRequest {
@@ -93,10 +96,10 @@ func TestInFlightPacketQueryPaginated(t *testing.T) {
 		for i := 0; i < len(InFlightPacket); i += step {
 			resp, err := keeper.InFlightPackets(wctx, request(nil, uint64(i), uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.IbcForwards), step)
+			require.LessOrEqual(t, len(resp.InFlightPackets), step)
 			require.Subset(t,
 				nullify.Fill(InFlightPacket),
-				nullify.Fill(resp.IbcForwards),
+				nullify.Fill(resp.InFlightPackets),
 			)
 		}
 	})
@@ -106,10 +109,10 @@ func TestInFlightPacketQueryPaginated(t *testing.T) {
 		for i := 0; i < len(InFlightPacket); i += step {
 			resp, err := keeper.InFlightPackets(wctx, request(next, 0, uint64(step), false))
 			require.NoError(t, err)
-			require.LessOrEqual(t, len(resp.IbcForwards), step)
+			require.LessOrEqual(t, len(resp.InFlightPackets), step)
 			require.Subset(t,
 				nullify.Fill(InFlightPacket),
-				nullify.Fill(resp.IbcForwards),
+				nullify.Fill(resp.InFlightPackets),
 			)
 			next = resp.Pagination.NextKey
 		}
@@ -120,7 +123,7 @@ func TestInFlightPacketQueryPaginated(t *testing.T) {
 		require.Equal(t, len(InFlightPacket), int(resp.Pagination.Total))
 		require.ElementsMatch(t,
 			nullify.Fill(InFlightPacket),
-			nullify.Fill(resp.IbcForwards),
+			nullify.Fill(resp.InFlightPackets),
 		)
 	})
 	t.Run("InvalidRequest", func(t *testing.T) {

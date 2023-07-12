@@ -22,18 +22,18 @@ func TestGenesis(t *testing.T) {
 		},
 		Mints: []types.Mint{
 			{
-				SourceDomainSender: "1",
+				SourceDomainSender: "3",
 			},
 			{
-				SourceDomainSender: "2",
+				SourceDomainSender: "4",
 			},
 		},
 		IbcForwards: []types.IBCForward{
 			{
-				SourceDomainSender: "1",
+				SourceDomainSender: "5",
 			},
 			{
-				SourceDomainSender: "2",
+				SourceDomainSender: "6",
 			},
 		},
 	}

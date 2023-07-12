@@ -1,7 +1,6 @@
 package keeper_test
 
 import (
-	"fmt"
 	"strconv"
 	"testing"
 
@@ -16,17 +15,13 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-type mintWrapper struct {
-	attestation string
-	mint        types.Mint
-}
-
-func createNMint(keeper *keeper.Keeper, ctx sdk.Context, n int) []mintWrapper {
-	items := make([]mintWrapper, n)
+func createNMint(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.Mint {
+	items := make([]types.Mint, n)
 	for i := range items {
-		items[i].attestation = fmt.Sprintf("attestation %d", i)
+		items[i].SourceDomainSender = strconv.Itoa(i)
+		items[i].Nonce = uint64(i)
 
-		keeper.SetMint(ctx, items[i].mint)
+		keeper.SetMint(ctx, items[i])
 	}
 	return items
 }
@@ -35,12 +30,14 @@ func TestMintGet(t *testing.T) {
 	routerKeeper, ctx := keepertest.RouterKeeper(t)
 	items := createNMint(routerKeeper, ctx, 10)
 	for _, item := range items {
-		rst, found := routerKeeper.GetMint(ctx,
-			item.attestation,
+		rst, found := routerKeeper.GetMint(
+			ctx,
+			item.SourceDomainSender,
+			item.Nonce,
 		)
 		require.True(t, found)
 		require.Equal(t,
-			nullify.Fill(&item.mint),
+			nullify.Fill(&item),
 			nullify.Fill(&rst),
 		)
 	}
@@ -50,8 +47,16 @@ func TestMintRemove(t *testing.T) {
 	routerKeeper, ctx := keepertest.RouterKeeper(t)
 	items := createNMint(routerKeeper, ctx, 10)
 	for _, item := range items {
-		routerKeeper.DeleteMint(ctx, item.attestation)
-		_, found := routerKeeper.GetMint(ctx, item.attestation)
+		routerKeeper.DeleteMint(
+			ctx,
+			item.SourceDomainSender,
+			item.Nonce,
+		)
+		_, found := routerKeeper.GetMint(
+			ctx,
+			item.SourceDomainSender,
+			item.Nonce,
+		)
 		require.False(t, found)
 	}
 }
@@ -61,7 +66,7 @@ func TestMintGetAll(t *testing.T) {
 	items := createNMint(routerKeeper, ctx, 10)
 	mint := make([]types.Mint, len(items))
 	for i, item := range items {
-		mint[i] = item.mint
+		mint[i] = item
 	}
 	require.ElementsMatch(t,
 		nullify.Fill(mint),
