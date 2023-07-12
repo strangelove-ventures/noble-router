@@ -293,7 +293,7 @@ replace (
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 
 	// TODO: use local strangelove-ventures/noble
-	github.com/strangelove-ventures/noble => ../noble-cctp
+	github.com/strangelove-ventures/noble => ../noble-router-companion
 
 	// use cometbft
 	github.com/tendermint/tendermint => github.com/cometbft/cometbft v0.34.27
