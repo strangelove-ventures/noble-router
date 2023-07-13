@@ -7,7 +7,6 @@ import "gogoproto/gogo.proto";
 option go_package = "github.com/strangelove-ventures/noble-router/x/router/types";
 
 // mints are stored so incoming IBC forward messages can check if a mint has been processed
-// @param attestation // TODO
 // @param amount
 // @param destinationDomain
 // @param mintRecipient

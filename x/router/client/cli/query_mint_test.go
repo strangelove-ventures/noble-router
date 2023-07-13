@@ -25,7 +25,7 @@ func networkWithMintObjects(t *testing.T, n int) (*network.Network, []types.Mint
 
 	for i := 0; i < n; i++ {
 		Mints := types.Mint{
-			Attestation: strconv.Itoa(i),
+			SourceDomainSender: strconv.Itoa(i),
 		}
 		nullify.Fill(&Mints)
 		state.Mints = append(state.Mints, Mints)
@@ -53,7 +53,7 @@ func TestShowMint(t *testing.T) {
 	}{
 		{
 			desc:  "found",
-			idKey: objs[0].Attestation,
+			idKey: objs[0].SourceDomainSender,
 			args:  common,
 			obj:   objs[0],
 		},
