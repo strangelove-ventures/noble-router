@@ -26,6 +26,8 @@ const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
 // InFlightPacket contains information about original packet for
 // writing the acknowledgement and refunding if necessary. // TODO fill out params
+// @param source_domain_sender
+// @param nonce
 // @param original_sender_address
 // @param refund_channel_id
 // @param refund_port_id

@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
 // TODO copy pasted from github.com/strangelove-ventures/noble-cctp, change to reference that
@@ -16,10 +17,8 @@ type BurnMessage struct {
 
 type Message struct {
 	Version           uint32
-	SourceDomainBytes []byte
 	SourceDomain      uint32
 	DestinationDomain uint32
-	NonceBytes        []byte
 	Nonce             uint64
 	Sender            []byte
 	Recipient         []byte
@@ -58,24 +57,9 @@ const (
 	Bytes32Len          = 32
 )
 
-func decodeMessage(msg []byte) Message {
-	message := Message{
-		Version:           binary.BigEndian.Uint32(msg[VersionIndex:SourceDomainIndex]),
-		SourceDomainBytes: msg[SourceDomainIndex:DestinationDomainIndex],
-		SourceDomain:      binary.BigEndian.Uint32(msg[SourceDomainIndex:DestinationDomainIndex]),
-		DestinationDomain: binary.BigEndian.Uint32(msg[DestinationDomainIndex:NonceIndex]),
-		NonceBytes:        msg[NonceIndex:SenderIndex],
-		Nonce:             binary.BigEndian.Uint64(msg[NonceIndex:SenderIndex]),
-		Sender:            msg[SenderIndex:RecipientIndex],
-		Recipient:         msg[RecipientIndex:DestinationCallerIndex],
-		DestinationCaller: msg[DestinationCallerIndex:MessageBodyIndex],
-		MessageBody:       msg[MessageBodyIndex:],
-	}
+// TODO test these, make sure indices are correct, errs correctly
 
-	return message
-}
-
-func decodeBurnMessage(msg []byte) BurnMessage {
+func decodeBurnMessage(msg []byte) (BurnMessage, error) {
 	message := BurnMessage{
 		Version:       binary.BigEndian.Uint32(msg[BurnMsgVersionIndex:BurnTokenIndex]),
 		BurnToken:     msg[BurnTokenIndex:MintRecipientIndex],
@@ -84,28 +68,33 @@ func decodeBurnMessage(msg []byte) BurnMessage {
 		MessageSender: msg[MsgSenderIndex:BurnMessageLen],
 	}
 
-	return message
+	return message, nil
 }
 
-func parseBurnMessageIntoBytes(msg BurnMessage) []byte {
-	result := make([]byte, BurnMessageLen)
-
-	versionBytes := make([]byte, 4)
-	binary.LittleEndian.PutUint32(versionBytes, msg.Version)
-
-	amountBytes := make([]byte, Bytes32Len)
-	binary.LittleEndian.PutUint64(amountBytes, msg.Amount)
-
-	copyBytes(BurnMsgVersionIndex, BurnTokenIndex, versionBytes, &result)
-	copyBytes(BurnTokenIndex, MintRecipientIndex, msg.BurnToken, &result)
-	copyBytes(MintRecipientIndex, AmountIndex, msg.MintRecipient, &result)
-	copyBytes(AmountIndex, MsgSenderIndex, amountBytes, &result)
-
-	return result
-}
-
-func copyBytes(start int, end int, copyFrom []byte, copyInto *[]byte) {
-	for i := start; i < end; i++ {
-		(*copyInto)[i] = copyFrom[i]
+func decodeMessage(msg []byte) (Message, error) {
+	message := Message{
+		Version:           binary.BigEndian.Uint32(msg[VersionIndex:SourceDomainIndex]),
+		SourceDomain:      binary.BigEndian.Uint32(msg[SourceDomainIndex:DestinationDomainIndex]),
+		DestinationDomain: binary.BigEndian.Uint32(msg[DestinationDomainIndex:NonceIndex]),
+		Nonce:             binary.BigEndian.Uint64(msg[NonceIndex:SenderIndex]),
+		Sender:            msg[SenderIndex:RecipientIndex],
+		Recipient:         msg[RecipientIndex:DestinationCallerIndex],
+		DestinationCaller: msg[DestinationCallerIndex:MessageBodyIndex],
+		MessageBody:       msg[MessageBodyIndex:],
 	}
+
+	return message, nil
+}
+
+func decodeIBCForward(msg []byte) (types.IBCForward, error) {
+	message := types.IBCForward{
+		SourceDomainSender: string(msg[0:32]),
+		Nonce:              binary.LittleEndian.Uint64(msg[33:40]),
+		Port:               string(msg[40:44]),
+		Channel:            string(msg[44:60]),
+		Data:               string(msg[60:]),
+		AckError:           false,
+	}
+
+	return message, nil
 }

@@ -11,10 +11,12 @@ option go_package = "github.com/strangelove-ventures/noble-router/x/router/types
 // @param port
 // @param channel
 // @param data
+// @param ack_error
 message IBCForward {
   string source_domain_sender = 1;
   uint64 nonce = 2;
   string port = 3;
   string channel = 4;
   string data = 5;
+  bool ack_error = 6;
 }

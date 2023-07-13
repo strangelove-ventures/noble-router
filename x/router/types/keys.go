@@ -2,6 +2,7 @@ package types
 
 import (
 	"encoding/binary"
+	"fmt"
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -44,4 +45,8 @@ func InFlightPacketPrefix(p string) []byte {
 
 func MintPrefix(p string) []byte {
 	return []byte(p)
+}
+
+func RefundPacketKey(channelID, portID string, sequence uint64) []byte {
+	return []byte(fmt.Sprintf("%s/%s/%d", channelID, portID, sequence))
 }

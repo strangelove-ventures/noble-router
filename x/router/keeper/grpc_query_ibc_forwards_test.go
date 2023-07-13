@@ -73,7 +73,7 @@ func TestIBCForwardQuerySingle(t *testing.T) {
 }
 
 func TestIBCForwardQueryPaginated(t *testing.T) {
-	keeper, ctx := keepertest.RouterKeeper(t) // TODO this returns the noble version, not the x/router version
+	keeper, ctx := keepertest.RouterKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNIBCForward(keeper, ctx, 5)
 	IBCForward := make([]types.IBCForward, len(msgs))
