@@ -34,7 +34,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					{SourceDomainSender: "0"},
 					{SourceDomainSender: "1"},
 				},
-				IbcForwards: []types.IBCForward{
+				IbcForwards: []types.IBCForwardMetadata{
 					{SourceDomainSender: "0"},
 					{SourceDomainSender: "1"},
 				},
@@ -49,7 +49,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					{SourceDomainSender: "0"},
 					{SourceDomainSender: "1"},
 				},
-				IbcForwards: []types.IBCForward{
+				IbcForwards: []types.IBCForwardMetadata{
 					{SourceDomainSender: "0"},
 					{SourceDomainSender: "1"},
 				},
@@ -64,7 +64,7 @@ func TestGenesisState_Validate(t *testing.T) {
 					{SourceDomainSender: "0"},
 					{SourceDomainSender: "1"},
 				},
-				IbcForwards: []types.IBCForward{
+				IbcForwards: []types.IBCForwardMetadata{
 					{SourceDomainSender: "0"},
 					{SourceDomainSender: "1"},
 				},

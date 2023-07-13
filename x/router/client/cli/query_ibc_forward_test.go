@@ -17,14 +17,14 @@ import (
 	"github.com/strangelove-ventures/noble/testutil/nullify"
 )
 
-func networkWithIBCForwardObjects(t *testing.T, n int) (*network.Network, []types.IBCForward) {
+func networkWithIBCForwardObjects(t *testing.T, n int) (*network.Network, []types.IBCForwardMetadata) {
 	t.Helper()
 	cfg := network.DefaultConfig()
 	state := types.GenesisState{}
 	require.NoError(t, cfg.Codec.UnmarshalJSON(cfg.GenesisState[types.ModuleName], &state))
 
 	for i := 0; i < n; i++ {
-		IBCForward := types.IBCForward{
+		IBCForward := types.IBCForwardMetadata{
 			SourceDomainSender: strconv.Itoa(i),
 		}
 		nullify.Fill(&IBCForward)
@@ -49,7 +49,7 @@ func TestShowIBCForward(t *testing.T) {
 
 		args []string
 		err  error
-		obj  types.IBCForward
+		obj  types.IBCForwardMetadata
 	}{
 		{
 			desc:  "found",

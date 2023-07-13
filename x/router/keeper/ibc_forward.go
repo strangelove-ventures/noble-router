@@ -8,14 +8,14 @@ import (
 )
 
 // SetIBCForward sets a IBCForward in the store
-func (k Keeper) SetIBCForward(ctx sdk.Context, key types.IBCForward) {
+func (k Keeper) SetIBCForward(ctx sdk.Context, key types.StoreIBCForwardMetadata) {
 	store := ctx.KVStore(k.storeKey)
 	b := k.cdc.MustMarshal(&key)
 	store.Set(types.LookupKey(key.SourceDomainSender, key.Nonce), b)
 }
 
 // GetIBCForward returns IBCForward
-func (k Keeper) GetIBCForward(ctx sdk.Context, sourceContractAddress string, nonce uint64) (val types.IBCForward, found bool) {
+func (k Keeper) GetIBCForward(ctx sdk.Context, sourceContractAddress string, nonce uint64) (val types.StoreIBCForwardMetadata, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IBCForwardPrefix(types.IBCForwardKeyPrefix))
 
 	b := store.Get(types.LookupKey(sourceContractAddress, nonce))
@@ -34,14 +34,14 @@ func (k Keeper) DeleteIBCForward(ctx sdk.Context, sourceContractAddress string, 
 }
 
 // GetAllIBCForwards returns all IBCForwards
-func (k Keeper) GetAllIBCForwards(ctx sdk.Context) (list []types.IBCForward) {
+func (k Keeper) GetAllIBCForwards(ctx sdk.Context) (list []types.StoreIBCForwardMetadata) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.IBCForwardPrefix(types.IBCForwardKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
-		var val types.IBCForward
+		var val types.StoreIBCForwardMetadata
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		list = append(list, val)
 	}

@@ -76,7 +76,7 @@ func TestIBCForwardQueryPaginated(t *testing.T) {
 	keeper, ctx := keepertest.RouterKeeper(t)
 	wctx := sdk.WrapSDKContext(ctx)
 	msgs := createNIBCForward(keeper, ctx, 5)
-	IBCForward := make([]types.IBCForward, len(msgs))
+	IBCForward := make([]types.IBCForwardMetadata, len(msgs))
 	for i, msg := range msgs {
 		IBCForward[i] = msg
 	}

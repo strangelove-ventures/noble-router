@@ -4,7 +4,7 @@ package noble.router;
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "router/ibc_forward.proto";
+import "router/ibc_forward_metadata.proto";
 import "router/in_flight_packet.proto";
 import "router/mint.proto";
 import "router/params.proto";
@@ -35,7 +35,7 @@ service Query {
   }
   // Queries an InFlightPacket by source_contract_address and nonce
   rpc InFlightPacket(QueryGetInFlightPacketRequest) returns (QueryGetInFlightPacketResponse) {
-    option (google.api.http).get = "/noble/router/in_flight_packets/{source_contract_address}/{nonce}";
+    option (google.api.http).get = "/noble/router/in_flight_packets/{source_contract_address}/{nonce}"; // TODO chan port seq
   }
   // Queries a list of InFlightPackets
   rpc InFlightPackets(QueryAllInFlightPacketsRequest) returns (QueryAllInFlightPacketsResponse) {
@@ -74,7 +74,7 @@ message QueryGetIBCForwardRequest {
 }
 
 message QueryGetIBCForwardResponse {
-  IBCForward ibcForward = 1 [(gogoproto.nullable) = false];
+  StoreIBCForwardMetadata ibcForward = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryAllIBCForwardsRequest {
@@ -82,7 +82,7 @@ message QueryAllIBCForwardsRequest {
 }
 
 message QueryAllIBCForwardsResponse {
-  repeated IBCForward ibcForwards = 1 [(gogoproto.nullable) = false];
+  repeated StoreIBCForwardMetadata ibcForwards = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

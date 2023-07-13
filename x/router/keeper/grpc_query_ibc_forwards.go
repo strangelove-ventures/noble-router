@@ -30,14 +30,14 @@ func (k Keeper) IBCForwards(c context.Context, req *types.QueryAllIBCForwardsReq
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	var IBCForwards []types.IBCForward
+	var IBCForwards []types.IBCForwardMetadata
 	ctx := sdk.UnwrapSDKContext(c)
 
 	store := ctx.KVStore(k.storeKey)
 	IBCForwardsStore := prefix.NewStore(store, types.IBCForwardPrefix(types.IBCForwardKeyPrefix))
 
 	pageRes, err := query.Paginate(IBCForwardsStore, req.Pagination, func(key []byte, value []byte) error {
-		var IBCForward types.IBCForward
+		var IBCForward types.IBCForwardMetadata
 		if err := k.cdc.Unmarshal(value, &IBCForward); err != nil {
 			return err
 		}

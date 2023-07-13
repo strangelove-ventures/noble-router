@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"encoding/binary"
+	"github.com/gogo/protobuf/proto"
 	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
@@ -86,15 +87,11 @@ func decodeMessage(msg []byte) (Message, error) {
 	return message, nil
 }
 
-func decodeIBCForward(msg []byte) (types.IBCForward, error) {
-	message := types.IBCForward{
-		SourceDomainSender: string(msg[0:32]),
-		Nonce:              binary.LittleEndian.Uint64(msg[33:40]),
-		Port:               string(msg[40:44]),
-		Channel:            string(msg[44:60]),
-		Data:               string(msg[60:]),
-		AckError:           false,
+func decodeIBCForward(msg []byte) (types.IBCForwardMetadata, error) {
+	var res types.IBCForwardMetadata
+	if err := proto.Unmarshal(msg, &res); err != nil {
+		return types.IBCForwardMetadata{}, err
 	}
 
-	return message, nil
+	return res, nil
 }

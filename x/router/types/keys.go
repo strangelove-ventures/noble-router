@@ -47,6 +47,6 @@ func MintPrefix(p string) []byte {
 	return []byte(p)
 }
 
-func RefundPacketKey(channelID, portID string, sequence uint64) []byte {
+func InFlightPacketKey(channelID, portID string, sequence uint64) []byte {
 	return []byte(fmt.Sprintf("%s/%s/%d", channelID, portID, sequence))
 }

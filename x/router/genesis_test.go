@@ -28,7 +28,7 @@ func TestGenesis(t *testing.T) {
 				SourceDomainSender: "4",
 			},
 		},
-		IbcForwards: []types.IBCForward{
+		IbcForwards: []types.IBCForwardMetadata{
 			{
 				SourceDomainSender: "5",
 			},
