@@ -6,7 +6,7 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/strangelove-ventures/noble-router/x/router/types";
 
-// IBCForwards are stored so incoming mints can check for a forward message
+// StoreIBCForwardMetadata are stored so incoming mints can check for a forward message
 // @param source_domain_sender
 // @param nonce
 // @param port

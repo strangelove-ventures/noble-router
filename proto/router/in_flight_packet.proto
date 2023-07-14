@@ -6,8 +6,7 @@ import "gogoproto/gogo.proto";
 
 option go_package = "github.com/strangelove-ventures/noble-router/x/router/types";
 
-// InFlightPacket contains information about original packet for
-// writing the acknowledgement and refunding if necessary.
+// InFlightPacket contains information about the initially minted funds
 // @param source_domain_sender
 // @param nonce
 message InFlightPacket {
