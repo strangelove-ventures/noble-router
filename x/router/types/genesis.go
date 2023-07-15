@@ -9,7 +9,7 @@ func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		InFlightPackets: []InFlightPacket{},
 		Mints:           []Mint{},
-		IbcForwards:     []IBCForward{},
+		IbcForwards:     []StoreIBCForwardMetadata{},
 		Params:          DefaultParams(),
 	}
 }

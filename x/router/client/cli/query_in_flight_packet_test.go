@@ -25,7 +25,7 @@ func networkWithInFlightPacketObjects(t *testing.T, n int) (*network.Network, []
 
 	for i := 0; i < n; i++ {
 		InFlightPacket := types.InFlightPacket{
-			OriginalSenderAddress: strconv.Itoa(i),
+			SourceDomainSender: strconv.Itoa(i),
 		}
 		nullify.Fill(&InFlightPacket)
 		state.InFlightPackets = append(state.InFlightPackets, InFlightPacket)
@@ -53,7 +53,7 @@ func TestShowInFlightPacket(t *testing.T) {
 	}{
 		{
 			desc:  "found",
-			idKey: objs[0].OriginalSenderAddress,
+			idKey: objs[0].SourceDomainSender,
 			args:  common,
 			obj:   objs[0],
 		},

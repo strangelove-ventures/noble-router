@@ -15,8 +15,8 @@ import (
 // Prevent strconv unused error
 var _ = strconv.IntSize
 
-func createNIBCForward(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.IBCForwardMetadata {
-	items := make([]types.IBCForwardMetadata, n)
+func createNIBCForward(keeper *keeper.Keeper, ctx sdk.Context, n int) []types.StoreIBCForwardMetadata {
+	items := make([]types.StoreIBCForwardMetadata, n)
 	for i := range items {
 		items[i].SourceDomainSender = strconv.Itoa(i)
 		items[i].Nonce = uint64(i)
@@ -64,7 +64,7 @@ func TestIBCForwardRemove(t *testing.T) {
 func TestIBCForwardGetAll(t *testing.T) {
 	routerKeeper, ctx := keepertest.RouterKeeper(t)
 	items := createNIBCForward(routerKeeper, ctx, 10)
-	ibcForward := make([]types.IBCForwardMetadata, len(items))
+	ibcForward := make([]types.StoreIBCForwardMetadata, len(items))
 	for i, item := range items {
 		ibcForward[i] = item
 	}

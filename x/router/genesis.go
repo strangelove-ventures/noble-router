@@ -10,9 +10,6 @@ import (
 
 // InitGenesis initializes the module's state from a provided genesis state.
 func InitGenesis(ctx sdk.Context, k *keeper.Keeper, genState types.GenesisState) {
-	for _, elem := range genState.InFlightPackets {
-		k.SetInFlightPacket(ctx, elem)
-	}
 
 	for _, elem := range genState.Mints {
 		k.SetMint(ctx, elem)

@@ -35,7 +35,7 @@ service Query {
   }
   // Queries an InFlightPacket by source_contract_address and nonce
   rpc InFlightPacket(QueryGetInFlightPacketRequest) returns (QueryGetInFlightPacketResponse) {
-    option (google.api.http).get = "/noble/router/in_flight_packets/{source_contract_address}/{nonce}"; // TODO chan port seq
+    option (google.api.http).get = "/noble/router/in_flight_packets/{channel_id}/{port_id}/{sequence}";
   }
   // Queries a list of InFlightPackets
   rpc InFlightPackets(QueryAllInFlightPacketsRequest) returns (QueryAllInFlightPacketsResponse) {
@@ -87,8 +87,9 @@ message QueryAllIBCForwardsResponse {
 }
 
 message QueryGetInFlightPacketRequest {
-  string source_contract_address = 1;
-  uint64 nonce = 2;
+  string channel_id = 1;
+  string port_id = 2;
+  uint64 sequence = 3;
 }
 
 message QueryGetInFlightPacketResponse {

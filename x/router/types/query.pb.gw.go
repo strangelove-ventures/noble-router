@@ -286,26 +286,37 @@ func request_Query_InFlightPacket_0(ctx context.Context, marshaler runtime.Marsh
 		_   = err
 	)
 
-	val, ok = pathParams["source_contract_address"]
+	val, ok = pathParams["channel_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "source_contract_address")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "channel_id")
 	}
 
-	protoReq.SourceContractAddress, err = runtime.String(val)
+	protoReq.ChannelId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "source_contract_address", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "channel_id", err)
 	}
 
-	val, ok = pathParams["nonce"]
+	val, ok = pathParams["port_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "nonce")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "port_id")
 	}
 
-	protoReq.Nonce, err = runtime.Uint64(val)
+	protoReq.PortId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "nonce", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "port_id", err)
+	}
+
+	val, ok = pathParams["sequence"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sequence")
+	}
+
+	protoReq.Sequence, err = runtime.Uint64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sequence", err)
 	}
 
 	msg, err := client.InFlightPacket(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -324,26 +335,37 @@ func local_request_Query_InFlightPacket_0(ctx context.Context, marshaler runtime
 		_   = err
 	)
 
-	val, ok = pathParams["source_contract_address"]
+	val, ok = pathParams["channel_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "source_contract_address")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "channel_id")
 	}
 
-	protoReq.SourceContractAddress, err = runtime.String(val)
+	protoReq.ChannelId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "source_contract_address", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "channel_id", err)
 	}
 
-	val, ok = pathParams["nonce"]
+	val, ok = pathParams["port_id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "nonce")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "port_id")
 	}
 
-	protoReq.Nonce, err = runtime.Uint64(val)
+	protoReq.PortId, err = runtime.String(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "nonce", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "port_id", err)
+	}
+
+	val, ok = pathParams["sequence"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "sequence")
+	}
+
+	protoReq.Sequence, err = runtime.Uint64(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "sequence", err)
 	}
 
 	msg, err := server.InFlightPacket(ctx, &protoReq)
@@ -749,7 +771,7 @@ var (
 
 	pattern_Query_IBCForwards_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"noble", "router", "ibc_forward"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_Query_InFlightPacket_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4}, []string{"noble", "router", "in_flight_packets", "source_contract_address", "nonce"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Query_InFlightPacket_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3, 1, 0, 4, 1, 5, 4, 1, 0, 4, 1, 5, 5}, []string{"noble", "router", "in_flight_packets", "channel_id", "port_id", "sequence"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Query_InFlightPackets_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"noble", "router", "in_flight_packets"}, "", runtime.AssumeColonVerbOpt(true)))
 )

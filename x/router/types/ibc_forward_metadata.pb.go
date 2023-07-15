@@ -24,7 +24,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// IBCForwards are stored so incoming mints can check for a forward message
+// StoreIBCForwardMetadata are stored so incoming mints can check for a forward message
 // @param source_domain_sender
 // @param nonce
 // @param port

@@ -46,24 +46,25 @@ func CmdListInFlightPackets() *cobra.Command {
 
 func CmdShowInFlightPacket() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "show-in-flight-packet [source-contract-address] [nonce]",
+		Use:   "show-in-flight-packet [channel-id] [port-id] [sequence]",
 		Short: "shows an InFlightPacket",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx := client.GetClientContextFromCmd(cmd)
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			sourceContractAddress := args[0]
-			nonceRaw := args[1]
-			nonce, err := strconv.ParseUint(nonceRaw, 10, 64)
+			channelId := args[0]
+			portId := args[1]
+			sequence, err := strconv.ParseUint(args[2], 10, 64)
 			if err != nil {
 				return err
 			}
 
 			params := &types.QueryGetInFlightPacketRequest{
-				SourceContractAddress: sourceContractAddress,
-				Nonce:                 nonce,
+				ChannelId: channelId,
+				PortId:    portId,
+				Sequence:  sequence,
 			}
 
 			res, err := queryClient.InFlightPacket(context.Background(), params)

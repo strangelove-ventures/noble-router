@@ -17,7 +17,7 @@ func (k Keeper) InFlightPacket(c context.Context, req *types.QueryGetInFlightPac
 	}
 	ctx := sdk.UnwrapSDKContext(c)
 
-	val, found := k.GetInFlightPacket(ctx, req.SourceContractAddress, req.Nonce)
+	val, found := k.GetInFlightPacket(ctx, req.ChannelId, req.PortId, req.Sequence)
 	if !found {
 		return nil, status.Error(codes.NotFound, "not found")
 	}

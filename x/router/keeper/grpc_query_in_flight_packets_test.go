@@ -31,24 +31,27 @@ func TestInFlightPacketQuerySingle(t *testing.T) {
 		{
 			desc: "First",
 			request: &types.QueryGetInFlightPacketRequest{
-				SourceContractAddress: msgs[0].SourceDomainSender,
-				Nonce:                 msgs[0].Nonce,
+				ChannelId: "0",
+				PortId:    "0",
+				Sequence:  0,
 			},
 			response: &types.QueryGetInFlightPacketResponse{InFlightPacket: msgs[0]},
 		},
 		{
 			desc: "Second",
 			request: &types.QueryGetInFlightPacketRequest{
-				SourceContractAddress: msgs[1].SourceDomainSender,
-				Nonce:                 msgs[1].Nonce,
+				ChannelId: "1",
+				PortId:    "1",
+				Sequence:  1,
 			},
 			response: &types.QueryGetInFlightPacketResponse{InFlightPacket: msgs[1]},
 		},
 		{
 			desc: "KeyNotFound",
 			request: &types.QueryGetInFlightPacketRequest{
-				SourceContractAddress: "nothing",
-				Nonce:                 uint64(2),
+				ChannelId: "4",
+				PortId:    "1",
+				Sequence:  1,
 			},
 			err: status.Error(codes.NotFound, "not found"),
 		},

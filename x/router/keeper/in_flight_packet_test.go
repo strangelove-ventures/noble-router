@@ -21,7 +21,7 @@ func createNInFlightPacket(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 		items[i].SourceDomainSender = strconv.Itoa(i)
 		items[i].Nonce = uint64(i)
 
-		keeper.SetInFlightPacket(ctx, items[i])
+		keeper.SetInFlightPacket(ctx, strconv.Itoa(i), strconv.Itoa(i), uint64(i), items[i])
 	}
 	return items
 }
@@ -29,11 +29,12 @@ func createNInFlightPacket(keeper *keeper.Keeper, ctx sdk.Context, n int) []type
 func TestInFlightPacketGet(t *testing.T) {
 	routerKeeper, ctx := keepertest.RouterKeeper(t)
 	items := createNInFlightPacket(routerKeeper, ctx, 10)
-	for _, item := range items {
+	for i, item := range items {
 		rst, found := routerKeeper.GetInFlightPacket(
 			ctx,
-			item.SourceDomainSender,
-			item.Nonce)
+			strconv.Itoa(i),
+			strconv.Itoa(i),
+			uint64(i))
 		require.True(t, found)
 		require.Equal(t,
 			nullify.Fill(&item),
@@ -45,17 +46,17 @@ func TestInFlightPacketGet(t *testing.T) {
 func TestInFlightPacketRemove(t *testing.T) {
 	routerKeeper, ctx := keepertest.RouterKeeper(t)
 	items := createNInFlightPacket(routerKeeper, ctx, 10)
-	for _, item := range items {
+	for i, _ := range items {
 		routerKeeper.DeleteInFlightPacket(
 			ctx,
-			item.SourceDomainSender,
-			item.Nonce,
-		)
+			strconv.Itoa(i),
+			strconv.Itoa(i),
+			uint64(i))
 		_, found := routerKeeper.GetInFlightPacket(
 			ctx,
-			item.SourceDomainSender,
-			item.Nonce,
-		)
+			strconv.Itoa(i),
+			strconv.Itoa(i),
+			uint64(i))
 		require.False(t, found)
 	}
 }

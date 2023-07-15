@@ -24,8 +24,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// InFlightPacket contains information about original packet for
-// writing the acknowledgement and refunding if necessary.
+// InFlightPacket contains information about the initially minted funds
 // @param source_domain_sender
 // @param nonce
 type InFlightPacket struct {
