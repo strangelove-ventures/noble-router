@@ -3,10 +3,10 @@ package router_test
 import (
 	"testing"
 
-	keepertest "github.com/strangelove-ventures/noble/testutil/keeper"
+	keepertest "github.com/strangelove-ventures/noble-router/testutil/keeper"
+	"github.com/strangelove-ventures/noble-router/x/router"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 	"github.com/strangelove-ventures/noble/testutil/nullify"
-	"github.com/strangelove-ventures/noble/x/router"
-	"github.com/strangelove-ventures/noble/x/router/types"
 	"github.com/stretchr/testify/require"
 )
 

@@ -2,8 +2,8 @@ package router
 
 import (
 	_ "github.com/cosmos/cosmos-sdk/types/errors" // sdkerrors
-	"github.com/strangelove-ventures/noble/x/router/keeper"
-	"github.com/strangelove-ventures/noble/x/router/types"
+	"github.com/strangelove-ventures/noble-router/x/router/keeper"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )

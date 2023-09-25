@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eo pipefail
+set -eux pipefail
 
 protoc_gen_gocosmos() {
   if ! grep "github.com/gogo/protobuf => github.com/regen-network/protobuf" go.mod &>/dev/null ; then
@@ -8,8 +8,23 @@ protoc_gen_gocosmos() {
     return 1
   fi
 
-  go get github.com/regen-network/cosmos-proto/protoc-gen-gocosmos@latest 2>/dev/null
+  go get github.com/regen-network/cosmos-proto/protoc-gen-gocosmos@latest
 }
+
+export GOPRIVATE=github.com/circlefin/noble-cctp
+
+apk add git openssh
+
+mkdir -p ~/.ssh
+cat <<EOF > ~/.ssh/id_ed25519
+# HACK private key here
+# Careful, do not commit!
+EOF
+
+chmod 600 /root/.ssh/id_ed25519
+git config --global --add url."git@github.com:circlefin/noble-cctp.git".insteadOf "https://github.com/circlefin/noble-cctp"
+
+ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 protoc_gen_gocosmos
 
@@ -26,5 +41,5 @@ Mgoogle/protobuf/any.proto=github.com/cosmos/cosmos-sdk/codec/types:. \
 done
 
 # move proto files to the right places
-cp -r github.com/strangelove-ventures/noble/* ./
+cp -r github.com/strangelove-ventures/noble-router/* ./
 rm -rf github.com
