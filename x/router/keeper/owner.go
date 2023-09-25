@@ -1,8 +1,8 @@
 package keeper
 
 import (
+	"github.com/circlefin/noble-cctp/x/cctp/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/strangelove-ventures/noble/x/cctp/types"
 )
 
 // DeletePendingOwner deletes the pending owner of the router module from state.

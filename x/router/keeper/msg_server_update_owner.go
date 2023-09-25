@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/strangelove-ventures/noble/x/cctp/types"
+	"github.com/circlefin/noble-cctp/x/cctp/types"
 
 	sdkerrors "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

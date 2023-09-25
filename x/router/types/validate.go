@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/circlefin/noble-cctp/x/cctp/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	host "github.com/cosmos/ibc-go/v3/modules/core/24-host"
-	"github.com/strangelove-ventures/noble/x/cctp/types"
 )
 
 // Validate ensures that the fields are populated with data that is semantically correct.

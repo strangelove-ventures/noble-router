@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/strangelove-ventures/noble/x/router/types"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
 // msgServerRouterKeeper defines the router keeper methods required by the message server.

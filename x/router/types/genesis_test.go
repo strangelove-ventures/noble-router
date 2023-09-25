@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/strangelove-ventures/noble/x/router/types"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 
 	"github.com/stretchr/testify/require"
 )

@@ -3,12 +3,12 @@ package keeper
 import (
 	"time"
 
+	cctptypes "github.com/circlefin/noble-cctp/x/cctp/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	transfertypes "github.com/cosmos/ibc-go/v3/modules/apps/transfer/types"
 	clienttypes "github.com/cosmos/ibc-go/v3/modules/core/02-client/types"
-	cctptypes "github.com/strangelove-ventures/noble/x/cctp/types"
-	"github.com/strangelove-ventures/noble/x/router/types"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
 // MinimumRelativePacketTimeoutTimestamp is the default minimum packet timeout timestamp (in nanoseconds)

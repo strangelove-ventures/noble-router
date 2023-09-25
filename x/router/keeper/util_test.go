@@ -8,10 +8,10 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	channelTypes "github.com/cosmos/ibc-go/v3/modules/core/04-channel/types"
+	"github.com/strangelove-ventures/noble-router/x/router/keeper"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 	"github.com/strangelove-ventures/noble/testutil/nullify"
 	"github.com/strangelove-ventures/noble/testutil/sample"
-	"github.com/strangelove-ventures/noble/x/router/keeper"
-	"github.com/strangelove-ventures/noble/x/router/types"
 	"github.com/stretchr/testify/require"
 )
 

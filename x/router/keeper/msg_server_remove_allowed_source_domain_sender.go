@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/strangelove-ventures/noble/x/router/types"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
 func (m msgServer) RemoveAllowedSourceDomainSender(goCtx context.Context, msg *types.MsgRemoveAllowedSourceDomainSender) (*types.MsgRemoveAllowedSourceDomainSenderResponse, error) {

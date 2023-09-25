@@ -12,10 +12,10 @@ import (
 	tmcli "github.com/tendermint/tendermint/libs/cli"
 	"google.golang.org/grpc/status"
 
+	"github.com/strangelove-ventures/noble-router/x/router/client/cli"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 	"github.com/strangelove-ventures/noble/testutil/network"
 	"github.com/strangelove-ventures/noble/testutil/nullify"
-	"github.com/strangelove-ventures/noble/x/router/client/cli"
-	"github.com/strangelove-ventures/noble/x/router/types"
 )
 
 func networkWithIBCForwardObjects(t *testing.T, n uint32) (*network.Network, []types.StoreIBCForwardMetadata) {

@@ -10,10 +10,10 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	keepertest "github.com/strangelove-ventures/noble/testutil/keeper"
+	keepertest "github.com/strangelove-ventures/noble-router/testutil/keeper"
+	routerkeeper "github.com/strangelove-ventures/noble-router/x/router/keeper"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 	"github.com/strangelove-ventures/noble/testutil/nullify"
-	routerkeeper "github.com/strangelove-ventures/noble/x/router/keeper"
-	"github.com/strangelove-ventures/noble/x/router/types"
 )
 
 // Prevent strconv unused error

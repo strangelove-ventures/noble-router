@@ -5,7 +5,7 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/strangelove-ventures/noble/x/router/types"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
