@@ -3,12 +3,12 @@ package cli
 import (
 	"strconv"
 
-	"github.com/circlefin/noble-cctp-private-builds/x/router/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/cobra"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
 func CmdAddAllowedSourceDomainSender() *cobra.Command {

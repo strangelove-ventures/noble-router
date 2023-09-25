@@ -1,11 +1,11 @@
 package cli
 
 import (
-	"github.com/circlefin/noble-cctp-private-builds/x/router/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	"github.com/spf13/cobra"
+	"github.com/strangelove-ventures/noble-router/x/router/types"
 )
 
 func CmdUpdateOwner() *cobra.Command {
