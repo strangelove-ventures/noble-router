@@ -51,7 +51,9 @@ func CctpKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 type MockCctpKeeper struct{}
 
 func (k MockCctpKeeper) GetTokenPair(ctx sdk.Context, remoteDomain uint32, remoteToken []byte) (val types.TokenPair, found bool) {
-	return types.TokenPair{}, true
+	return types.TokenPair{
+		LocalToken: "uusdc",
+	}, true
 }
 
 func (MockCctpKeeper) GetAuthority(ctx sdk.Context) (val string, found bool) {

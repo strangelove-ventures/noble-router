@@ -14,6 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/tendermint/tendermint/libs/log"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+
 	tmdb "github.com/tendermint/tm-db"
 )
 
@@ -28,12 +29,17 @@ func RouterKeeper(t testing.TB) (*keeper.Keeper, sdk.Context) {
 	registry := codectypes.NewInterfaceRegistry()
 	cdc := codec.NewProtoCodec(registry)
 
+	tStoreKey := sdk.NewTransientStoreKey(types.TransientStoreKey)
+	tdb := tmdb.NewMemDB()
+	stateStore.MountStoreWithDB(tStoreKey, storetypes.StoreTypeIAVL, tdb)
+	require.NoError(t, stateStore.LoadLatestVersion())
+
 	paramsSubspace := typesparams.NewSubspace(cdc,
 		codec.NewLegacyAmino(),
 		storeKey,
-		storeKey,
+		tStoreKey,
 		"RouterParams",
-	)
+	).WithKeyTable(types.ParamKeyTable())
 	k := keeper.NewKeeper(
 		cdc,
 		storeKey,
