@@ -16,7 +16,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/spf13/cobra v1.7.0
 	github.com/strangelove-ventures/noble v1.0.1-0.20230717234609-400609f26a31
-	github.com/strangelove-ventures/paramauthority v0.2.1
+	github.com/strangelove-ventures/paramauthority v1.0.0
 	github.com/stretchr/testify v1.8.4
 	github.com/tendermint/tendermint v0.34.27
 	github.com/tendermint/tm-db v0.6.7
