@@ -141,10 +141,6 @@ func (am AppModule) InitGenesis(ctx sdk.Context, cdc codec.JSONCodec, gs json.Ra
 	var genState types.GenesisState
 	cdc.MustUnmarshalJSON(gs, &genState)
 
-	if genState.Owner == "" {
-		panic(fmt.Errorf("owner must be defined for router module"))
-	}
-
 	InitGenesis(ctx, am.keeper, genState)
 
 	return []abci.ValidatorUpdate{}
